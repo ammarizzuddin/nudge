@@ -5,6 +5,7 @@
 //  Created by Ammar Rosli on 06/10/2026.
 //
 
+import AppKit
 import EventKit
 import Foundation
 
@@ -62,6 +63,16 @@ final class CalendarManager {
         NotificationCenter.default.addObserver(
             forName: .EKEventStoreChanged,
             object: eventStore,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.onEventStoreChanged?()
+            }
+        }
+
+        NotificationCenter.default.addObserver(
+            forName: NSApplication.didBecomeActiveNotification,
+            object: nil,
             queue: .main
         ) { [weak self] _ in
             Task { @MainActor [weak self] in
@@ -131,6 +142,8 @@ final class CalendarManager {
 
         let relevantEvents = events
             .filter { !$0.isAllDay }
+            .filter { $0.status != .canceled }
+            .filter { !isDeclined($0) }
             .filter {
                 $0.startDate >= startDate
             }
@@ -146,11 +159,28 @@ final class CalendarManager {
             $0.startDate > now
         }
 
-        if let mostRecentlyStarted = startedEvents.last {
+        let reminderLeadTime = UserDefaults.standard.double(
+            forKey: "reminderLeadTime"
+        )
+        let reminderEndDate = now.addingTimeInterval(
+            reminderLeadTime * 60
+        )
+
+        if let imminentEvent = upcomingEvents.first(
+            where: { $0.startDate <= reminderEndDate }
+        ) {
+            nextEvent = imminentEvent
+        } else if let mostRecentlyStarted = startedEvents.last {
             nextEvent = mostRecentlyStarted
         } else {
             nextEvent = upcomingEvents.first
         }
+    }
+
+    private func isDeclined(_ event: EKEvent) -> Bool {
+        event.attendees?
+            .first(where: \.isCurrentUser)?
+            .participantStatus == .declined
     }
     
     private func excludedCalendarIdentifiers() -> Set<String> {

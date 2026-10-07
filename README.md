@@ -70,6 +70,8 @@ Nudge lives quietly in your menu bar, watches your selected calendars, and bring
 
 Nudge runs as a menu bar app and does not appear in the Dock.
 
+If Calendar access is denied, use **Open Calendar Privacy Settings…** from the Nudge menu to review the permission in System Settings.
+
 ## ⚙️ Settings
 
 Nudge can be customised from **Settings…** in the menu bar.
@@ -89,6 +91,8 @@ You can configure:
 Nudge uses Apple's EventKit framework to access calendar events.
 
 Calendar access is used to determine upcoming events and provide relevant meeting information. You can choose which calendars Nudge monitors from Settings.
+
+Nudge ignores all-day events, cancelled events and invitations you have declined. When events overlap or run back-to-back, it transitions to the next event as that event enters your configured reminder window.
 
 ## 🔒 Privacy
 

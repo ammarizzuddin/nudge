@@ -25,12 +25,14 @@ final class EventMonitor {
 
     // Event explicitly dismissed by the user.
     private var dismissedEventIdentifier: String?
+    private var dismissedEventStartDate: Date?
 
     // Snooze state.
     private var snoozedEventIdentifier: String?
     private var snoozedUntil: Date?
     
     private var alertSoundEventIdentifier: String?
+    private var alertSoundEventStartDate: Date?
     private var alertSoundTimer: Timer?
 
     init(
@@ -67,6 +69,12 @@ final class EventMonitor {
 
         snoozeTimer?.invalidate()
         snoozeTimer = nil
+
+        gracePeriodTimer?.invalidate()
+        gracePeriodTimer = nil
+
+        alertSoundTimer?.invalidate()
+        alertSoundTimer = nil
     }
     
     func checkNow() {
@@ -75,21 +83,8 @@ final class EventMonitor {
 
     private func checkForUpcomingEvent() {
         calendarManager.loadNextEvent()
-        
-        // temporary
-        if let event = calendarManager.nextEvent {
-            print(
-                "Nudge monitor:",
-                event.title ?? "Untitled",
-                "| Calendar:",
-                event.calendar.title
-            )
-        } else {
-            print("Nudge monitor: No eligible event")
-        }
 
         guard let event = calendarManager.nextEvent else {
-            print("Nudge monitor: hiding companion")
             hideCompanion()
             return
         }
@@ -131,7 +126,11 @@ final class EventMonitor {
         }
 
         // The user dismissed this event.
-        guard dismissedEventIdentifier != eventIdentifier else {
+        let isDismissed =
+            dismissedEventIdentifier == eventIdentifier &&
+            dismissedEventStartDate == event.startDate
+
+        guard !isDismissed else {
             return
         }
 
@@ -158,8 +157,8 @@ final class EventMonitor {
     }
 
     private func showCompanion(for event: EKEvent) {
-        let wasAlreadyVisible =
-            visibleEventIdentifier != nil
+        let isNewEvent =
+            visibleEventIdentifier != event.eventIdentifier
         
         visibleEventIdentifier = event.eventIdentifier
         visibleEventStartDate = event.startDate
@@ -179,7 +178,7 @@ final class EventMonitor {
             }
         )
         
-        if !wasAlreadyVisible {
+        if isNewEvent {
             NudgeSoundPlayer.playSelectedSound()
         }
 
@@ -190,12 +189,19 @@ final class EventMonitor {
 
     private func dismiss(event: EKEvent) {
         dismissedEventIdentifier = event.eventIdentifier
+        dismissedEventStartDate = event.startDate
 
         eventStartTimer?.invalidate()
         eventStartTimer = nil
 
         snoozeTimer?.invalidate()
         snoozeTimer = nil
+
+        gracePeriodTimer?.invalidate()
+        gracePeriodTimer = nil
+
+        alertSoundTimer?.invalidate()
+        alertSoundTimer = nil
 
         visibleEventIdentifier = nil
         visibleEventStartDate = nil
@@ -214,6 +220,12 @@ final class EventMonitor {
 
         eventStartTimer?.invalidate()
         eventStartTimer = nil
+
+        gracePeriodTimer?.invalidate()
+        gracePeriodTimer = nil
+
+        alertSoundTimer?.invalidate()
+        alertSoundTimer = nil
 
         visibleEventIdentifier = nil
         visibleEventStartDate = nil
@@ -236,29 +248,16 @@ final class EventMonitor {
     private func wakeFromSnooze() {
         snoozeTimer = nil
 
-        guard let snoozedEventIdentifier else {
-            return
-        }
-
-        // Refresh the calendar rather than relying on the old EKEvent object.
-        calendarManager.loadNextEvent()
-
-        guard let event = calendarManager.nextEvent,
-              event.eventIdentifier == snoozedEventIdentifier else {
-            self.snoozedEventIdentifier = nil
-            self.snoozedUntil = nil
+        guard snoozedEventIdentifier != nil else {
             return
         }
 
         self.snoozedEventIdentifier = nil
         self.snoozedUntil = nil
 
-        // Don't bring Nudge back if the meeting has already started.
-        guard event.startDate > Date() else {
-            return
-        }
-
-        showCompanion(for: event)
+        // Re-evaluate the current EventKit data so edits, deletions and
+        // reminder-window changes made during the snooze are respected.
+        checkForUpcomingEvent()
     }
 
     private func hideCompanion() {
@@ -299,28 +298,31 @@ final class EventMonitor {
         }
     }
     
-    private func currentEventDidStart() {
-        hideCompanion()
-        checkForUpcomingEvent()
-    }
-    
     private func scheduleAlertSound(for event: EKEvent) {
         alertSoundTimer?.invalidate()
         alertSoundTimer = nil
 
-        guard let eventIdentifier = event.eventIdentifier else {
+        guard let eventIdentifier = event.eventIdentifier,
+              let eventStartDate = event.startDate else {
             return
         }
 
-        let alertDate = event.startDate.addingTimeInterval(-30)
+        let alertDate = eventStartDate.addingTimeInterval(-30)
         let interval = alertDate.timeIntervalSinceNow
 
-        guard alertSoundEventIdentifier != eventIdentifier else {
+        let alreadyPlayedForEvent =
+            alertSoundEventIdentifier == eventIdentifier &&
+            alertSoundEventStartDate == eventStartDate
+
+        guard !alreadyPlayedForEvent else {
             return
         }
 
         if interval <= 0 {
-            playAlertSound(for: eventIdentifier)
+            playAlertSound(
+                for: eventIdentifier,
+                startDate: eventStartDate
+            )
             return
         }
 
@@ -330,24 +332,32 @@ final class EventMonitor {
         ) { [weak self] _ in
             MainActor.assumeIsolated {
                 self?.playAlertSound(
-                    for: eventIdentifier
+                    for: eventIdentifier,
+                    startDate: eventStartDate
                 )
             }
         }
     }
     
     private func playAlertSound(
-        for eventIdentifier: String
+        for eventIdentifier: String,
+        startDate: Date
     ) {
-        guard visibleEventIdentifier == eventIdentifier else {
+        guard visibleEventIdentifier == eventIdentifier,
+              visibleEventStartDate == startDate else {
             return
         }
 
-        guard alertSoundEventIdentifier != eventIdentifier else {
+        let alreadyPlayedForEvent =
+            alertSoundEventIdentifier == eventIdentifier &&
+            alertSoundEventStartDate == startDate
+
+        guard !alreadyPlayedForEvent else {
             return
         }
 
         alertSoundEventIdentifier = eventIdentifier
+        alertSoundEventStartDate = startDate
 
         NudgeSoundPlayer.playSelectedSound()
     }

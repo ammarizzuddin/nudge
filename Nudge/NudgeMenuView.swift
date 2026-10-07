@@ -59,11 +59,21 @@ struct NudgeMenuView: View {
 
         Divider()
 
-        if calendarManager.authorizationStatus != .fullAccess {
+        if calendarManager.authorizationStatus == .notDetermined {
             Button("Connect Calendar…") {
                 Task {
                     await calendarManager.requestAccess()
                 }
+            }
+
+            Divider()
+        } else if calendarManager.authorizationStatus == .restricted {
+            Text("Calendar Access Restricted")
+
+            Divider()
+        } else if calendarManager.authorizationStatus != .fullAccess {
+            Button("Open Calendar Privacy Settings…") {
+                openCalendarPrivacySettings()
             }
 
             Divider()
@@ -137,5 +147,15 @@ struct NudgeMenuView: View {
         case .other:
             return "Join Meeting"
         }
+    }
+
+    private func openCalendarPrivacySettings() {
+        guard let url = URL(
+            string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Calendars"
+        ) else {
+            return
+        }
+
+        NSWorkspace.shared.open(url)
     }
 }
