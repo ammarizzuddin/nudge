@@ -13,10 +13,10 @@ struct NudgeMenuBarLabel: View {
     let date: Date
 
     @AppStorage("showCountdownInMenuBar")
-    private var showCountdownInMenuBar = false
+    private var showCountdownInMenuBar = NudgeDefaults.showCountdownInMenuBar
     
     @AppStorage("reminderLeadTime")
-    private var reminderLeadTime: Double = 5
+    private var reminderLeadTime = NudgeDefaults.reminderLeadTime
 
     var body: some View {
         HStack(spacing: 4) {

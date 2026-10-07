@@ -9,6 +9,8 @@ struct NudgeApp: App {
     @State private var menuBarClock: MenuBarClock
 
     init() {
+        NudgeDefaults.register()
+
         let companionWindow = CompanionWindowController()
         let calendarManager = CalendarManager()
 

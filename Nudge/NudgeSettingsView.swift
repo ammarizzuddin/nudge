@@ -12,19 +12,19 @@ import SwiftUI
 
 struct NudgeSettingsView: View {
     @AppStorage("reminderLeadTime")
-    private var reminderLeadTime: Double = 5
+    private var reminderLeadTime = NudgeDefaults.reminderLeadTime
     
     @AppStorage("eventGracePeriod")
-    private var eventGracePeriod: Double = 5
+    private var eventGracePeriod = NudgeDefaults.eventGracePeriod
     
     @AppStorage("nudgeSound")
-    private var nudgeSound: String = "None"
+    private var nudgeSound = NudgeDefaults.nudgeSound
     
     @AppStorage("mascotAnimationMode")
     private var mascotAnimationMode: MascotAnimationMode = .full
     
     @AppStorage("showCountdownInMenuBar")
-    private var showCountdownInMenuBar = false
+    private var showCountdownInMenuBar = NudgeDefaults.showCountdownInMenuBar
 
     @State private var launchAtLogin =
         SMAppService.mainApp.status == .enabled

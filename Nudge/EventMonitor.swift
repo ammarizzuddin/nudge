@@ -102,12 +102,8 @@ final class EventMonitor {
             forKey: "reminderLeadTime"
         )
 
-        let reminderMinutes = reminderLeadTime > 0
-            ? reminderLeadTime
-            : 5
-
         let reminderInterval: TimeInterval =
-            reminderMinutes * 60
+            reminderLeadTime * 60
 
         let eventGracePeriod = UserDefaults.standard.double(
             forKey: "eventGracePeriod"
