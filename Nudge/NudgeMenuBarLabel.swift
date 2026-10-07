@@ -10,21 +10,25 @@ import SwiftUI
 
 struct NudgeMenuBarLabel: View {
     let calendarManager: CalendarManager
-    let clock: MenuBarClock
+    let date: Date
 
     @AppStorage("showCountdownInMenuBar")
     private var showCountdownInMenuBar = false
+    
+    @AppStorage("reminderLeadTime")
+    private var reminderLeadTime: Double = 5
 
     var body: some View {
         HStack(spacing: 4) {
             Image(systemName: "bell.badge")
 
             if showCountdownInMenuBar,
-               let event = calendarManager.nextEvent {
+               let event = calendarManager.nextEvent,
+               shouldShowCountdown(for: event, at: date) {
                 Text(
                     countdownText(
                         for: event,
-                        at: clock.now
+                        at: date
                     )
                 )
                 .monospacedDigit()
@@ -56,5 +60,29 @@ struct NudgeMenuBarLabel: View {
         let hours = minutes / 60
 
         return "\(hours)h"
+    }
+    
+    private func shouldShowCountdown(
+        for event: EKEvent,
+        at date: Date
+    ) -> Bool {
+        let timeUntilEvent = event.startDate.timeIntervalSince(date)
+        let reminderInterval = reminderLeadTime * 60
+
+        if timeUntilEvent > 0 {
+            return timeUntilEvent <= reminderInterval
+        }
+
+        let gracePeriod = UserDefaults.standard.double(
+            forKey: "eventGracePeriod"
+        )
+
+        guard gracePeriod > 0 else {
+            return false
+        }
+
+        let timeSinceStart = abs(timeUntilEvent)
+
+        return timeSinceStart <= gracePeriod * 60
     }
 }

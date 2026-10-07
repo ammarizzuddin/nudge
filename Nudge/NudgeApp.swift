@@ -16,7 +16,7 @@ struct NudgeApp: App {
             calendarManager: calendarManager,
             companionWindow: companionWindow
         )
-        
+
         let menuBarClock = MenuBarClock()
 
         _companionWindow = State(initialValue: companionWindow)
@@ -37,7 +37,7 @@ struct NudgeApp: App {
         } label: {
             NudgeMenuBarLabel(
                 calendarManager: calendarManager,
-                clock: menuBarClock
+                date: menuBarClock.now
             )
         }
         

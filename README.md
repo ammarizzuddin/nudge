@@ -55,7 +55,7 @@ Nudge lives quietly in your menu bar, watches your selected calendars, and bring
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/nudge.git
+   git clone https://github.com/ammarizzuddin/nudge.git
    ```
 
 2. Open the project in Xcode.
