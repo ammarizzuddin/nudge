@@ -81,15 +81,19 @@ final class CalendarManager {
         }
     }
 
-    func requestAccess() async {
+    @discardableResult
+    func requestAccess() async -> Bool {
         do {
             let granted = try await eventStore.requestFullAccessToEvents()
 
             if granted {
                 loadNextEvent()
             }
+
+            return granted
         } catch {
             print("Calendar access error: \(error)")
+            return false
         }
     }
 

@@ -66,7 +66,10 @@ Nudge lives quietly in your menu bar, watches your selected calendars, and bring
 
 5. Build and run the app.
 
-6. Grant Calendar access when prompted.
+6. Complete the welcome screen:
+   - Grant Calendar access so Nudge can find upcoming events.
+   - Optionally enable launch at login.
+   - Optionally enable the menu-bar countdown.
 
 Nudge runs as a menu bar app and does not appear in the Dock.
 

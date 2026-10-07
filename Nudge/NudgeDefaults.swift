@@ -13,6 +13,7 @@ enum NudgeDefaults {
     static let nudgeSound = "None"
     static let mascotAnimationMode = MascotAnimationMode.full.rawValue
     static let showCountdownInMenuBar = false
+    static let hasCompletedOnboarding = false
 
     static func register() {
         UserDefaults.standard.register(
@@ -21,7 +22,8 @@ enum NudgeDefaults {
                 "eventGracePeriod": eventGracePeriod,
                 "nudgeSound": nudgeSound,
                 "mascotAnimationMode": mascotAnimationMode,
-                "showCountdownInMenuBar": showCountdownInMenuBar
+                "showCountdownInMenuBar": showCountdownInMenuBar,
+                "hasCompletedOnboarding": hasCompletedOnboarding
             ]
         )
     }
