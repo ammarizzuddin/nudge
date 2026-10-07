@@ -159,7 +159,7 @@ Nudge takes a different approach: instead of another notification banner, a smal
 
 ## 📄 Licence
 
-No licence has been specified yet.
+Nudge is available under the [MIT License](LICENSE).
 
 ## 🚢 Releasing
 
