@@ -1,0 +1,45 @@
+# Xcode
+DerivedData/
+build/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+
+# User-specific Xcode settings
+xcuserdata/
+*.xcuserdatad/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Xcode generated files
+*.moved-aside
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+
+# Logs
+*.log
+
+# Code coverage
+*.xccovarchive
+*.xccovreport
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Secrets / local configuration
+.env
+.env.*
+*.xcconfig.local
+Secrets.xcconfig
