@@ -99,6 +99,8 @@ struct NudgeMenuView: View {
             openSettings()
         }
 
+        Text("Nudge \(NudgeVersion.displayVersion)")
+
         Divider()
 
         Button("Quit Nudge") {

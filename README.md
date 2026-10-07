@@ -5,7 +5,7 @@ A friendly macOS menu bar companion that nudges you before your next meeting.
 Nudge lives quietly in your menu bar, watches your selected calendars, and brings a small animated companion onto your desktop when your next event is approaching. It helps you see what's coming up and get into your meeting without digging through Calendar.
 
 > [!NOTE]
-> Nudge is currently under active development.
+> Nudge `0.1.0` is currently in beta and under active development.
 
 ## ✨ Features
 
@@ -78,6 +78,14 @@ Nudge runs as a menu bar app and does not appear in the Dock.
 
 If Calendar access is denied, use **Open Calendar Privacy Settings…** from the Nudge menu to review the permission in System Settings.
 
+## 📦 Installing a Beta Build
+
+1. Download the notarized `Nudge-<version>.zip` beta artifact.
+2. Unzip it and drag **Nudge.app** into the Applications folder.
+3. Open Nudge from Applications and complete the welcome screen.
+
+A correctly signed and notarized beta should open normally without bypassing Gatekeeper.
+
 ## ⚙️ Settings
 
 Nudge can be customised from **Settings…** in the menu bar.
@@ -106,6 +114,8 @@ Nudge is designed as a native macOS application and reads calendar information t
 
 Nudge does not require your calendar account credentials.
 
+Calendar data is processed locally. Nudge does not upload calendar events or require a Nudge account.
+
 ## 🛠️ Built With
 
 - Swift
@@ -128,6 +138,13 @@ DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
 
 The test suite covers reminder and grace-period boundaries, countdown labels, event priority for overlapping or back-to-back events, and meeting-link detection.
 
+## 🩹 Troubleshooting
+
+- **No events appear:** Confirm Calendar access is enabled for Nudge in **System Settings → Privacy & Security → Calendars**, then review the selected calendars in Nudge Settings.
+- **Nudge does not launch at login:** Toggle **Launch Nudge at login** off and on again, then verify Nudge under **System Settings → General → Login Items & Extensions**.
+- **No menu-bar countdown appears:** Enable it in Nudge Settings and make sure the next event is inside the configured reminder window.
+- **A meeting link is missing:** Confirm the event contains a supported Zoom, Microsoft Teams or Google Meet URL in its URL, notes or location field.
+
 ## 🧪 Project Status
 
 Nudge is currently an early-stage personal project and is under active development.
@@ -143,3 +160,7 @@ Nudge takes a different approach: instead of another notification banner, a smal
 ## 📄 Licence
 
 No licence has been specified yet.
+
+## 🚢 Releasing
+
+See [the beta release checklist](docs/BETA_RELEASE_CHECKLIST.md) for the archive, notarization, packaging and fresh-Mac verification workflow.

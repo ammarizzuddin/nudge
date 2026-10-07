@@ -1,3 +1,10 @@
+//
+//  NudgeApp.swift
+//  Nudge
+//
+//  Created by Ammar Rosli on 06/10/2026.
+//
+
 import SwiftUI
 
 @main

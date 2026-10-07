@@ -1,3 +1,10 @@
+//
+//  OnboardingWindowController.swift
+//  Nudge
+//
+//  Created by Ammar Rosli on 07/10/2026.
+//
+
 import AppKit
 import SwiftUI
 

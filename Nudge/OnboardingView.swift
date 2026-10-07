@@ -1,3 +1,10 @@
+//
+//  OnboardingView.swift
+//  Nudge
+//
+//  Created by Ammar Rosli on 07/10/2026.
+//
+
 import AppKit
 import EventKit
 import ServiceManagement
