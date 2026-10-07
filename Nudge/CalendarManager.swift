@@ -15,6 +15,7 @@ final class CalendarManager {
     private let eventStore = EKEventStore()
 
     var nextEvent: EKEvent?
+    var followingEvent: EKEvent?
     var onEventStoreChanged: (() -> Void)?
 
     var authorizationStatus: EKAuthorizationStatus {
@@ -100,6 +101,7 @@ final class CalendarManager {
     func loadNextEvent() {
         guard authorizationStatus == .fullAccess else {
             nextEvent = nil
+            followingEvent = nil
             return
         }
 
@@ -110,6 +112,8 @@ final class CalendarManager {
             value: 7,
             to: now
         ) else {
+            nextEvent = nil
+            followingEvent = nil
             return
         }
 
@@ -133,6 +137,7 @@ final class CalendarManager {
 
         guard !enabledCalendars.isEmpty else {
             nextEvent = nil
+            followingEvent = nil
             return
         }
 
@@ -156,11 +161,25 @@ final class CalendarManager {
             forKey: "reminderLeadTime"
         )
 
-        nextEvent = ReminderTiming.selectedEvent(
+        let selectedEvent = ReminderTiming.selectedEvent(
             from: relevantEvents,
             now: now,
             reminderLeadTime: reminderLeadTime * 60,
             startDate: { $0.startDate }
+        )
+
+        nextEvent = selectedEvent
+
+        guard let selectedEvent else {
+            followingEvent = nil
+            return
+        }
+
+        followingEvent = ReminderTiming.followingEvent(
+            after: selectedEvent,
+            from: relevantEvents,
+            startDate: { $0.startDate },
+            isSameEvent: { $0 === $1 }
         )
     }
 

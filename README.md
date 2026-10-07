@@ -18,6 +18,9 @@ Nudge lives quietly in your menu bar, watches your selected calendars, and bring
 - **Live countdown**  
   See exactly how long remains before an event starts.
 
+- **At-a-glance menu**
+  See the next two events, their start times and calendar, with quick actions for joining meetings, opening locations and viewing Calendar.
+
 - **Meeting link detection**  
   Automatically detects Google Meet, Zoom, Microsoft Teams and other meeting links.
 

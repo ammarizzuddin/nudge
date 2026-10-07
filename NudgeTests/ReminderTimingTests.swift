@@ -104,6 +104,44 @@ final class ReminderTimingTests: XCTestCase {
         )
     }
 
+    func testFollowingEventUsesChronologicalOrder() {
+        let dates = [600.0, 120.0, 300.0].map(
+            now.addingTimeInterval
+        )
+        let selected = dates[1]
+
+        let following = ReminderTiming.followingEvent(
+            after: selected,
+            from: dates,
+            startDate: { $0 },
+            isSameEvent: { $0 == $1 }
+        )
+
+        XCTAssertEqual(
+            following?.timeIntervalSince(now),
+            300
+        )
+    }
+
+    func testFollowingEventCanShareSelectedStartTime() {
+        struct Event: Equatable {
+            let id: Int
+            let startDate: Date
+        }
+
+        let selected = Event(id: 1, startDate: now)
+        let simultaneous = Event(id: 2, startDate: now)
+
+        let following = ReminderTiming.followingEvent(
+            after: selected,
+            from: [selected, simultaneous],
+            startDate: \.startDate,
+            isSameEvent: { $0.id == $1.id }
+        )
+
+        XCTAssertEqual(following, simultaneous)
+    }
+
     private func isActive(
         startOffset: TimeInterval,
         leadTime: TimeInterval,
