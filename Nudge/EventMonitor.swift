@@ -91,7 +91,6 @@ final class EventMonitor {
 
         let eventIdentifier = event.eventIdentifier
         let now = Date()
-        let timeUntilEvent = event.startDate.timeIntervalSince(now)
 
         let reminderLeadTime = UserDefaults.standard.double(
             forKey: "reminderLeadTime"
@@ -107,18 +106,12 @@ final class EventMonitor {
         let graceInterval: TimeInterval =
             eventGracePeriod * 60
 
-        let timeSinceEventStarted =
-            now.timeIntervalSince(event.startDate)
-
-        let isUpcoming =
-            timeUntilEvent > 0 &&
-            timeUntilEvent <= reminderInterval
-
-        let isWithinGracePeriod =
-            timeSinceEventStarted >= 0 &&
-            timeSinceEventStarted <= graceInterval
-
-        guard isUpcoming || isWithinGracePeriod else {
+        guard ReminderTiming.isActive(
+            startDate: event.startDate,
+            now: now,
+            reminderLeadTime: reminderInterval,
+            gracePeriod: graceInterval
+        ) else {
             if visibleEventIdentifier != nil {
                 hideCompanion()
             }

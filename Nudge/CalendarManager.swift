@@ -147,34 +147,17 @@ final class CalendarManager {
             .filter {
                 $0.startDate >= startDate
             }
-            .sorted {
-                $0.startDate < $1.startDate
-            }
-
-        let startedEvents = relevantEvents.filter {
-            $0.startDate <= now
-        }
-
-        let upcomingEvents = relevantEvents.filter {
-            $0.startDate > now
-        }
 
         let reminderLeadTime = UserDefaults.standard.double(
             forKey: "reminderLeadTime"
         )
-        let reminderEndDate = now.addingTimeInterval(
-            reminderLeadTime * 60
-        )
 
-        if let imminentEvent = upcomingEvents.first(
-            where: { $0.startDate <= reminderEndDate }
-        ) {
-            nextEvent = imminentEvent
-        } else if let mostRecentlyStarted = startedEvents.last {
-            nextEvent = mostRecentlyStarted
-        } else {
-            nextEvent = upcomingEvents.first
-        }
+        nextEvent = ReminderTiming.selectedEvent(
+            from: relevantEvents,
+            now: now,
+            reminderLeadTime: reminderLeadTime * 60,
+            startDate: { $0.startDate }
+        )
     }
 
     private func isDeclined(_ event: EKEvent) -> Bool {

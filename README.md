@@ -108,6 +108,20 @@ Nudge does not require your calendar account credentials.
 - EventKit
 - ServiceManagement
 
+## 🧪 Testing
+
+Run the unit tests in Xcode with **Product → Test**, or from Terminal:
+
+```bash
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+  xcodebuild test \
+  -project Nudge.xcodeproj \
+  -scheme Nudge \
+  -destination 'platform=macOS'
+```
+
+The test suite covers reminder and grace-period boundaries, countdown labels, event priority for overlapping or back-to-back events, and meeting-link detection.
+
 ## 🧪 Project Status
 
 Nudge is currently an early-stage personal project and is under active development.

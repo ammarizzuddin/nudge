@@ -8,7 +8,7 @@
 import EventKit
 import Foundation
 
-enum MeetingProvider {
+enum MeetingProvider: Equatable {
     case zoom
     case teams
     case googleMeet
