@@ -99,7 +99,9 @@ struct NudgeMenuView: View {
             openSettings()
         }
 
-        Text("Nudge \(NudgeVersion.displayVersion)")
+        Button("About Nudge") {
+            NudgeAboutPanel.show()
+        }
 
         Divider()
 
