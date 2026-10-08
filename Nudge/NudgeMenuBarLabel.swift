@@ -20,7 +20,12 @@ struct NudgeMenuBarLabel: View {
 
     var body: some View {
         HStack(spacing: 4) {
-            Image(systemName: "bell.badge")
+            Image("NudgeMenuBarIcon")
+                .renderingMode(.template)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 18, height: 18)
+                .accessibilityLabel("Nudge")
 
             if showCountdownInMenuBar,
                let event = calendarManager.nextEvent,

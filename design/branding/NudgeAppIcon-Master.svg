@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>Nudge — Gentle Nudge app icon</title>
+  <desc>Editable vector reconstruction: blue-purple clock ring, dark hands, orange reminder and two waves. Transparent outer canvas.</desc>
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2=".7" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#fff"/><stop offset=".5" stop-color="#f5faff"/><stop offset="1" stop-color="#e8edff"/></linearGradient>
+    <linearGradient id="ring" x1="235" y1="300" x2="800" y2="720" gradientUnits="userSpaceOnUse"><stop stop-color="#19b9f8"/><stop offset=".35" stop-color="#007aff"/><stop offset=".68" stop-color="#3435ff"/><stop offset="1" stop-color="#8844ff"/></linearGradient>
+    <radialGradient id="ringLight" cx=".22" cy=".16" r=".8"><stop stop-color="#a5e9ff" stop-opacity=".65"/><stop offset=".4" stop-color="#36a8ff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="orange" x1="690" y1="240" x2="778" y2="356" gradientUnits="userSpaceOnUse"><stop stop-color="#ffe348"/><stop offset=".35" stop-color="#ffb91b"/><stop offset="1" stop-color="#ff7b00"/></linearGradient>
+    <linearGradient id="waves" x1="748" y1="162" x2="850" y2="287" gradientUnits="userSpaceOnUse"><stop stop-color="#ffdb92"/><stop offset=".5" stop-color="#ff9519"/><stop offset="1" stop-color="#ffb94f"/></linearGradient>
+    <linearGradient id="hands" x1="450" y1="425" x2="540" y2="572" gradientUnits="userSpaceOnUse"><stop stop-color="#35415c"/><stop offset="1" stop-color="#101c35"/></linearGradient>
+    <radialGradient id="wash" cx=".46" cy=".77" r=".7"><stop stop-color="#819fff" stop-opacity=".28"/><stop offset="1" stop-color="#c1eaff" stop-opacity="0"/></radialGradient>
+    <filter id="tileShadow" x="-15%" y="-15%" width="130%" height="135%"><feGaussianBlur in="SourceAlpha" stdDeviation="13"/><feOffset dy="15"/><feComponentTransfer><feFuncA type="linear" slope=".22"/></feComponentTransfer><feFlood flood-color="#45618b"/><feComposite in2="SourceAlpha" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="14" stdDeviation="15" flood-color="#304bca" flood-opacity=".23"/></filter>
+    <filter id="handShadow" x="-35%" y="-35%" width="170%" height="185%"><feDropShadow dx="0" dy="10" stdDeviation="9" flood-color="#162645" flood-opacity=".27"/></filter>
+    <mask id="ringCut"><rect width="1024" height="1024" fill="white"/><circle cx="727" cy="307" r="82" fill="black"/></mask>
+  </defs>
+  <rect id="background" x="96" y="96" width="832" height="832" rx="202" fill="url(#tile)" stroke="#e6edf5" stroke-width="2" filter="url(#tileShadow)"/>
+  <rect x="97" y="97" width="830" height="830" rx="201" fill="url(#wash)"/>
+  <g id="clock-ring" mask="url(#ringCut)" filter="url(#softShadow)">
+    <circle cx="510" cy="523" r="259" fill="none" stroke="url(#ring)" stroke-width="92"/>
+    <circle cx="510" cy="523" r="259" fill="none" stroke="url(#ringLight)" stroke-width="89"/>
+  </g>
+  <g id="clock-hands" filter="url(#handShadow)" fill="none" stroke="url(#hands)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M420 483 L506 553 L630 434" stroke-width="51"/>
+    <circle cx="506" cy="553" r="37" fill="url(#hands)" stroke="#17243b" stroke-width="1.5"/>
+  </g>
+  <g id="reminder">
+    <circle cx="727" cy="307" r="67" fill="url(#orange)" stroke="#fff5bc" stroke-width="1.5"/>
+    <g fill="none" stroke="url(#waves)" stroke-width="29" stroke-linecap="round">
+      <path d="M757 216 C790 220 815 250 820 285"/>
+      <path d="M765 175 C819 179 860 224 862 279"/>
+    </g>
+  </g>
+</svg>
